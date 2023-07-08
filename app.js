@@ -9,7 +9,16 @@ require("dotenv").config();
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
 const passportConfig = require('./passport');
+const MySQLStore = require('express-mysql-session')(session);
 
+const options = {
+  user: process.env.USERNAME,
+  database: process.env.DB,
+  password: process.env.PASSWORD,
+  host: process.env.HOST,
+  port: 3306,
+}
+const sessionStore = new MySQLStore(options);
 
 const app = express();
 passportConfig();
@@ -51,7 +60,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // request의 본문을 분석해주는 미들웨어
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // request의 쿠키를 해석해주는 미들웨어
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -65,11 +74,18 @@ app.use(
         httpOnly: true,
         secure: false,
      },
+     store: sessionStore,
   }),
 );
 
 // passport 설정
 app.use(passport.initialize());
+app.use((req, res, next) => {
+  console.log(req.session);
+  console.log(req.cookies);
+  console.log(req.signedCookies);
+  next();
+})
 app.use(passport.session());
 
 // index 라우터

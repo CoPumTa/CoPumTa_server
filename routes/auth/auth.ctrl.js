@@ -1,4 +1,6 @@
 const passport = require('passport');
+const User = require('../../models/user');
+const bcrypt = require('bcrypt');
 
 exports.idExists = (req, res) => {
   console.log(`idExists Function, req: ${req}`);
@@ -52,7 +54,26 @@ exports.login = (req, res, next) => {
   })(req, res, next);
 }
 
-exports.register = (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
+exports.signUp = async (req, res, next) => {
+  console.log("singUp logic")
+  const {email, userName, password } = req.body;
+  try {
+    // 기존에 이메일로 가입한 사람이 있나 검사 (중복 가입 방지)
+    const exUser = await User.findOne({ where: { email } });
+    if (exUser) {
+       return res.redirect('/signUp?error=exist'); // 에러페이지로 바로 리다이렉트
+    }
+    // 정상적인 회원가입 절차면 해시화
+    const hash = await bcrypt.hash(password, 12);
+    // DB에 해당 회원정보 생성
+    await User.create({
+       email,
+       userName,
+       password: hash, // 비밀번호에 해시문자를 넣어준다.
+    });
+    return res.redirect('/');
+  } catch(err) {
+    console.error(err);
+    return next(err);
+  }
 }
