@@ -15,4 +15,6 @@ auth.get("/isLogined", isLoggedIn, (req, res, next) => {
   res.json(JSON.stringify(req.user));
 });
 
+auth.get('/logout', isLoggedIn, authCtrls.logout);
+
 module.exports = auth;
