@@ -11,16 +11,8 @@ auth.post("/idExists", authCtrls.idExists);
 auth.get("/", authCtrls.input);
 auth.post("/login", isNotLoggedIn, authCtrls.login);
 auth.post("/signUp", isNotLoggedIn, authCtrls.signUp);
-auth.get("/isLogined", (req, res, next) => {
-  console.log(req.user);
-  console.log(req.cookies);
-  next()
-},isLoggedIn, (req, res, next) => {
-  const {email, userName, password } = req.user;
-  console.log(email);
-  console.log(userName);
-  console.log(req.user);
-  next();
+auth.get("/isLogined", isLoggedIn, (req, res, next) => {
+  res.json(JSON.stringify(req.user));
 });
 
 module.exports = auth;

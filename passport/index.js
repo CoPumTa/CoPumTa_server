@@ -25,7 +25,6 @@ module.exports = () => {
    passport.deserializeUser((id, done) => {
       // req.session에 저장된 사용자 아이디를 바탕으로 DB 조회로 사용자 정보를 얻어낸 후 req.user에 저장. 
       // 즉, id를 sql로 조회해서 전체 정보를 가져오는 복구 로직이다.
-      console.log("chekcing...")
       User.findOne({ where: { id } })
         .then(user => {
           console.log(`user ${user.userName} is come`);

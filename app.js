@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const logger = require("morgan");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require('passport');
@@ -55,6 +56,25 @@ sequelize
 // request에 대한 로그를 기록하는 미들웨어
 app.use(logger("dev"));
 
+// CORS 전부 오픈
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true,
+}));
+
+app.use(
+  session({
+     resave: false,
+     saveUninitialized: false,
+     secret: process.env.COOKIE_SECRET,
+     cookie: {
+        httpOnly: true,
+        secure: false,
+     },
+  }),
+);
+
 // 정적 파일들을 접근할 수 있도록하는 미들웨어
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -65,27 +85,9 @@ app.use(express.urlencoded({ extended: true }));
 // request의 쿠키를 해석해주는 미들웨어
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
-app.use(
-  session({
-     resave: false,
-     saveUninitialized: false,
-     secret: process.env.COOKIE_SECRET,
-     cookie: {
-        httpOnly: true,
-        secure: false,
-     },
-     store: sessionStore,
-  }),
-);
 
 // passport 설정
 app.use(passport.initialize());
-app.use((req, res, next) => {
-  console.log(req.session);
-  console.log(req.cookies);
-  console.log(req.signedCookies);
-  next();
-})
 app.use(passport.session());
 
 // index 라우터
