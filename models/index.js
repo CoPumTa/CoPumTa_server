@@ -6,6 +6,7 @@ const process = require('process');
 const basename = path.basename(__filename);
 
 const User = require("./user");
+const UserInfo = require("./userinfo");
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
@@ -18,16 +19,14 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-db.User = User;
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
 db.sequelize = sequelize;
+db.User = User;
+db.UserInfo = UserInfo;
 
 User.init(sequelize); 
+UserInfo.init(sequelize);
+
+User.associate(db);
+UserInfo.associate(db);
 
 module.exports = db;
