@@ -1,4 +1,5 @@
 //* 사용자 미들웨어를 직접 구현
+const UserInfo = require('../models/userinfo');
 
 exports.isLoggedIn = (req, res, next) => {
   // isAuthenticated()로 검사해 로그인이 되어있으면
@@ -18,3 +19,12 @@ exports.isNotLoggedIn = (req, res, next) => {
      res.redirect(`/?error=${message}`);
   }
 };
+
+exports.initInfo = (req, res) => {
+  console.log("initInfo logic");
+  console.log("user info: ", req.user.dataValues.userId);
+  UserInfo.create({
+    userId: req.user.dataValues.userId,
+  })
+  return res.status(204).send();
+}

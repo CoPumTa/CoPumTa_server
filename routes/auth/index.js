@@ -1,5 +1,5 @@
 const express = require("express");
-const { isLoggedIn, isNotLoggedIn } = require('../middleware')
+const { isLoggedIn, isNotLoggedIn, initInfo } = require('../middleware')
 const authCtrls = require("./auth.ctrl");
 const auth = express.Router();
 
@@ -10,7 +10,7 @@ auth.use((req, res, next) => {
 auth.post("/idExists", authCtrls.idExists);
 auth.get("/", authCtrls.input);
 auth.post("/login", isNotLoggedIn, authCtrls.login);
-auth.post("/signUp", isNotLoggedIn, authCtrls.signUp);
+auth.post("/signUp", isNotLoggedIn, authCtrls.signUp, initInfo);
 auth.get("/isLogined", (req, res, next) => {
   res.json(JSON.stringify(req.user));
 });

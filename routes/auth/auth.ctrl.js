@@ -71,7 +71,11 @@ exports.signUp = async (req, res, next) => {
        userName,
        password: hash, // 비밀번호에 해시문자를 넣어준다.
     });
-    return res.redirect('/');
+    
+    req.user = await User.findOne({ where: {email}});
+    // initInfo로 넘어간다
+    next();
+    // return res.redirect('/');
   } catch(err) {
     console.error(err);
     return next(err);
