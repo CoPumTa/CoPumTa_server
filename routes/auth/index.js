@@ -11,7 +11,7 @@ auth.post("/idExists", authCtrls.idExists);
 auth.get("/", authCtrls.input);
 auth.post("/login", isNotLoggedIn, authCtrls.login);
 auth.post("/signUp", isNotLoggedIn, authCtrls.signUp);
-auth.get("/isLogined", isLoggedIn, (req, res, next) => {
+auth.get("/isLogined", (req, res, next) => {
   res.json(JSON.stringify(req.user));
 });
 

@@ -41,7 +41,8 @@ exports.login = (req, res, next) => {
       return next(authError); // 에러처리 미들웨어로 보낸다.
     }
     if(!user){
-      return res.redirect(`/?loginError=${info.message}`);
+      res.status(401);
+      return res.send();
     }
 
     return req.login(user, loginError => {
