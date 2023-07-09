@@ -57,11 +57,7 @@ sequelize
 app.use(logger("dev"));
 
 // CORS 전부 오픈
-app.use(cors({
-  origin: "http://localhost:3000",
-  methods: ['GET', 'POST', 'OPTIONS'],
-  credentials: true,
-}));
+app.use(cors());
 
 app.use(
   session({

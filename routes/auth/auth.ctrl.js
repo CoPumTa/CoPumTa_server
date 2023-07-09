@@ -34,7 +34,7 @@ exports.input = (req, res) => {
 
 exports.login = (req, res, next) => {
   console.log("login logic");
-  console.log(req.body);
+  console.log("body seems: ", req.body);
   passport.authenticate("local", (authError, user, info) => {
     if(authError) {
       console.error(authError);
@@ -44,7 +44,6 @@ exports.login = (req, res, next) => {
       res.status(401);
       return res.send();
     }
-
     return req.login(user, loginError => {
       if(loginError) {
         console.error(loginError);
