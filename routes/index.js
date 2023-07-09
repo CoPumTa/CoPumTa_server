@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
   //   password: "1234",
   // });
   res.locals.title = "Node Chat!";
-  res.json("index");
+  res.json("{index}");
 });
 router.use("/auth", auth);
 

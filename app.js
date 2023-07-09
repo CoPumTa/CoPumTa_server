@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const logger = require("morgan");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require('passport');
@@ -9,7 +10,16 @@ require("dotenv").config();
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
 const passportConfig = require('./passport');
+const MySQLStore = require('express-mysql-session')(session);
 
+const options = {
+  user: process.env.USERNAME,
+  database: process.env.DB,
+  password: process.env.PASSWORD,
+  host: process.env.HOST,
+  port: 3306,
+}
+const sessionStore = new MySQLStore(options);
 
 const app = express();
 passportConfig();
@@ -46,16 +56,9 @@ sequelize
 // request에 대한 로그를 기록하는 미들웨어
 app.use(logger("dev"));
 
-// 정적 파일들을 접근할 수 있도록하는 미들웨어
-app.use(express.static(path.join(__dirname, "public")));
+// CORS 전부 오픈
+app.use(cors());
 
-// request의 본문을 분석해주는 미들웨어
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-// request의 쿠키를 해석해주는 미들웨어
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(sessionMiddleware);
 app.use(
   session({
      resave: false,
@@ -67,6 +70,17 @@ app.use(
      },
   }),
 );
+
+// 정적 파일들을 접근할 수 있도록하는 미들웨어
+app.use(express.static(path.join(__dirname, "public")));
+
+// request의 본문을 분석해주는 미들웨어
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// request의 쿠키를 해석해주는 미들웨어
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(sessionMiddleware);
 
 // passport 설정
 app.use(passport.initialize());
