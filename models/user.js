@@ -7,24 +7,32 @@ class User extends Sequelize.Model {
    static init(sequelize) {
     return super.init(
         {  // 첫번째 객체 인수는 테이블 필드에 대한 설정
-        id: {
-          type: Sequelize.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-        },
-        email: {
-          type: Sequelize.STRING(40),
-          allowNull: false,
-          unique: true,
-        },
-        userName: {
-          type: Sequelize.STRING(15),
-          allowNull: false,
-        },
-        password:{
-          type: Sequelize.STRING(100),
-          allowNull: false,
-        },
+          id: {
+            type: Sequelize.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+          },
+          email: {
+            type: Sequelize.STRING(40),
+            allowNull: false,
+            unique: true,
+          },
+          userName: {
+            type: Sequelize.STRING(15),
+            allowNull: false,
+          },
+          password: {
+            type: Sequelize.STRING(100),
+            allowNull: false,
+          },
+          snsId: {
+            type: Sequelize.STRING(40),
+            allowNull: true,
+          },
+          provider: {
+            type: Sequelize.STRING(40),
+            allowNull: true
+          }
         },
         {  // 두번째 객체 인수는 테이블 자체에 대한 설정
           sequelize, /* static init 메서드의 매개변수와 연결되는 옵션으로, db.sequelize 객체를 넣어야 한다. */
