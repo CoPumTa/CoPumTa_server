@@ -3,6 +3,7 @@ const { User } = require('../models');
 
 const router = express.Router();
 const auth = require("./auth");
+const user = require("./user");
 
 router.get("/", (req, res) => {
   // const result = User.create({ // 생성된 쿼리 결과를 얻는다.
@@ -14,5 +15,6 @@ router.get("/", (req, res) => {
   res.json("{index}");
 });
 router.use("/auth", auth);
+router.use("/user", user);
 
 module.exports = router;
