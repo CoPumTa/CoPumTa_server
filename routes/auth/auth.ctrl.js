@@ -71,7 +71,8 @@ exports.signUp = async (req, res, next) => {
     // 기존에 해당 이메일로 가입한 사람이 있나 검사 (중복 가입 방지)
     const exUser = await User.findOne({ where: { email } });
     if (exUser) {
-      return res.redirect("/signUp?error=exist"); // 에러페이지로 바로 리다이렉트
+      res.status(401);
+      return res.json(JSON.stringify({result: "email already exists"})); // 에러페이지로 바로 리다이렉트
     }
     // 기존에 해당 snsId로 가입한 사람이 있나 검사 (중복 가입 방지)
     if (snsId && provider) {

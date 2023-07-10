@@ -6,6 +6,8 @@ const process = require('process');
 const basename = path.basename(__filename);
 
 const User = require("./user");
+const Challenge = require("./challenge");
+const ChallengeAttendance = require("./challengeattendance");
 // const UserInfo = require("./userinfo");
 
 const env = process.env.NODE_ENV || 'development';
@@ -21,12 +23,19 @@ if (config.use_env_variable) {
 
 db.sequelize = sequelize;
 db.User = User;
+db.Challenge = Challenge;
+db.ChallengeAttendance = ChallengeAttendance;
 // db.UserInfo = UserInfo;
 
-User.init(sequelize); 
+User.init(sequelize);
+Challenge.init(sequelize);
+ChallengeAttendance.init(sequelize);
+
 // UserInfo.init(sequelize);
 
 User.associate(db);
+Challenge.associate(db);
+ChallengeAttendance.associate(db);
 // UserInfo.associate(db);
 
 module.exports = db;

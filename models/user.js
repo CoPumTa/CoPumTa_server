@@ -55,6 +55,11 @@ class User extends Sequelize.Model {
             }
           ),
         },
+        isFlowing: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false,
+          defaultValue: false,
+        },
         points: {
           type: Sequelize.INTEGER,
           allowNull: false,
@@ -90,6 +95,8 @@ class User extends Sequelize.Model {
       User.belongsToMany(User, { as: 'Friends', through: "Friendships"})
       User.belongsToMany(User, { as: 'Requestees', through: 'friendRequests', foreignKey: 'requesterId', onDelete: 'CASCADE'});
       User.belongsToMany(User, { as: 'Requesters', through: 'friendRequests', foreignKey: 'requesteeId', onDelete: 'CASCADE'});
+      db.User.hasMany(db.Challenge, { foreignKey: "userId", sourceKey: "userId"});
+      db.User.hasMany(db.ChallengeAttendance, { foreignKey: "userId", sourceKey: "userId" });
    }
 };
 
