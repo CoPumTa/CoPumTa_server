@@ -29,7 +29,7 @@ module.exports = () => {
       User.findOne({ where: { userId: id } })
         .then(user => {
           console.log(`user ${user.email} is come`);
-          console.log("user info seems: ", user.dataValues);
+          // console.log("user info seems: ", user.dataValues);
           done(null, user);
         }) //? done()이 되면 이제 다시 req.login(user, ...) 쪽으로 되돌아가 다음 미들웨어를 실행하게 된다.
         .catch(err => done(err));

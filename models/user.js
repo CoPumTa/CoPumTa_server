@@ -19,7 +19,7 @@ class User extends Sequelize.Model {
         },
         userName: {
           type: Sequelize.STRING(15),
-          allowNull: true,
+          allowNull: false,
         },
         password: {
           type: Sequelize.STRING(100),
@@ -31,6 +31,41 @@ class User extends Sequelize.Model {
         },
         provider: {
           type: Sequelize.STRING(40),
+          allowNull: true
+        },
+        cumulativeTime: {
+          type: Sequelize.STRING(50),
+          allowNull: false,
+          defaultValue: JSON.stringify(
+            {
+              hour: 0,
+              minute: 0,
+              second: 0,
+            }
+          ),
+        },
+        todaysTime: {
+          type: Sequelize.STRING(50),
+          allowNull: false,
+          defaultValue: JSON.stringify(
+            {
+              hour: 0,
+              minute: 0,
+              second: 0,
+            }
+          ),
+        },
+        points: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          defaultValue: 0,
+        },
+        githubId: {
+          type: Sequelize.STRING(40),
+          allowNull: true,
+        },
+        badge: {
+          type: Sequelize.INTEGER,
           allowNull: true
         }
       },
@@ -52,7 +87,6 @@ class User extends Sequelize.Model {
       // db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey: 'id', onDelete: 'cascade', onUpdate: 'cascade' });
       // db.User (hasMany) db.Comment = 1:N 관계 이다.  
       // db.User는 가지고있다. 많이. db.Comment를
-      db.User.hasMany(db.UserInfo, { foreignKey: "userId", onDelete: "CASCADE" })
    }
 };
 

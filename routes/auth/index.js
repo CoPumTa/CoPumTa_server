@@ -10,7 +10,7 @@ auth.use((req, res, next) => {
 auth.post("/idExists", authCtrls.idExists);
 auth.get("/", authCtrls.input);
 auth.post("/login", isNotLoggedIn, authCtrls.login);
-auth.post("/signUp", isNotLoggedIn, authCtrls.signUp, initInfo);
+auth.post("/signUp", isNotLoggedIn, authCtrls.signUp);
 auth.get("/isLogined", (req, res, next) => {
   res.json(JSON.stringify(req.user));
 });
