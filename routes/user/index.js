@@ -9,7 +9,7 @@ user.use((req, res, next) => {
 })
 
 // test API to make dummy data
-user.post("/postInfo", userCtrl.postInfo);
+user.post("/postInfo", isLoggedIn, userCtrl.postInfo);
 user.get("/getInfo", isLoggedIn, userCtrl.getInfo);
 
 module.exports = user;

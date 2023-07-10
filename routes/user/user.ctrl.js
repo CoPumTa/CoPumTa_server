@@ -4,6 +4,7 @@ const UserInfo = require('../../models/userinfo');
 exports.postInfo = async (req, res) => {
   console.log("postInfo logic");
   const { cummulativeTime, todaysTime, points, githubId, badge, userId} = req.body;
+  console.log(req.body);
   const target = await UserInfo.findOne({where: { userId }})
   console.log("target is", target);
   
@@ -16,7 +17,7 @@ exports.postInfo = async (req, res) => {
   })
 
   console.log("changed result is: ", target);
-  res.status(204).json(JSON.stringify(target));
+  res.json(JSON.stringify(target));
 }
 
 exports.getInfo = async (req, res) => {
