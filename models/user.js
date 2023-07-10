@@ -87,6 +87,9 @@ class User extends Sequelize.Model {
       // db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey: 'id', onDelete: 'cascade', onUpdate: 'cascade' });
       // db.User (hasMany) db.Comment = 1:N 관계 이다.  
       // db.User는 가지고있다. 많이. db.Comment를
+      User.belongsToMany(User, { as: 'Friends', through: "Friendships"})
+      User.belongsToMany(User, { as: 'Requestees', through: 'friendRequests', foreignKey: 'requesterId', onDelete: 'CASCADE'});
+      User.belongsToMany(User, { as: 'Requesters', through: 'friendRequests', foreignKey: 'requesteeId', onDelete: 'CASCADE'});
    }
 };
 

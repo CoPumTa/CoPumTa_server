@@ -1,5 +1,4 @@
 //* 사용자 미들웨어를 직접 구현
-const UserInfo = require('../models/userinfo');
 
 exports.isLoggedIn = (req, res, next) => {
   // isAuthenticated()로 검사해 로그인이 되어있으면
