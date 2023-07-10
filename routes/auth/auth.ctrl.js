@@ -35,6 +35,10 @@ exports.input = (req, res) => {
 exports.login = (req, res, next) => {
   console.log("login logic");
   console.log("body seems: ", req.body);
+
+  if(req.body.snsId) {
+    req.body = {...req.body, password: req.body.snsId};
+  }
   
   // TODO: 카카오, google로 로그인할 때, 해당 소셜 메일을 받아와서 email 항목을 채우고
   // sns id를 암호화하여 password 필드를 채움
@@ -92,7 +96,11 @@ exports.signUp = async (req, res, next) => {
       });
     } else {
       /* social sign up */
+      console.log("sign up with sns");
+      const hash = await bcrypt.hash(snsId, 12); // snsId를 local DB에 저장하기 위한 pw로 사용
       await User.create({
+        email, // 유저가 sns에 가입한 email(정보 제공 동의)
+        password: hash,
         snsId,
         provider,
       });
